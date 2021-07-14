@@ -1,0 +1,14 @@
+{
+    "tournament_name": "Mundial",
+    "start_date": "2021-07-12",
+    "end_date": "2022-07-12",
+    "start_time": "11:00",
+    "end_time": "21:00",
+    "participants": [
+        "España",
+        "Italia",
+        "Brasil",
+        "Argentina",
+        "Inglaterra"
+    ]
+  }
