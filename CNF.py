@@ -86,13 +86,13 @@ def at_most_once(cnf_file):
     counter = 0
     for i,j in all_matches:
         for k1 in range(1, days + 1):
-            for k2 in range(k1, days + 1):
+            for k2 in range(k1 + 1, days + 1):
                 current_clause = [str(-1 * day_to_n(i, j, k1)), str(-1 * day_to_n(i, j, k2)), '0']
                 cnf_file.write(" ".join(current_clause) + newline)
                 counter += 1
 
         for m1 in range(1, daily_games + 1):
-            for m2 in range(m1, days + 1):
+            for m2 in range(m1 + 1, days + 1):
                 current_clause = [str(-1 * time_to_n(i, j, m11)), str(-1 * time_to_n(i, j, m2)), '0']
                 cnf_file.write(" ".join(current_clause) + newline)
                 counter += 1
@@ -119,8 +119,28 @@ def no_simultaneous_match(cnf_file):
 
     assert(counter == correct_total_clauses)
 
-#def one_match_per_team_per_day(cnf_file):
+def one_match_per_team_per_day(cnf_file):
+    counter = 0
+    for i in range(teams):
+        for j in range(i + 1, teams):
+            for k in range(j + 1, teams):
+                for m in range(1, days + 1):
+                    current_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(i, k, m)), '0']
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
 
+                    second_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(k, i, m)), '0']
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
+                    third_clause = [str(-1 * day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m)), '0']
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
+            for m in range(1, days + 1):
+                current_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(j, i, m)), '0']
+                cnf_file.write(" ".join(current_clause) + newline)
+                counter += 1
 
     
 
