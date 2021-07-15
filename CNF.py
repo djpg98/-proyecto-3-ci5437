@@ -33,9 +33,14 @@ def round_down(stime):
         return stime[0:3] + '00'
 
 def day_to_n(local, visitor, matchday):
+    global coef1
+    global days
     return coef1 * local + days * visitor + matchday
 
 def time_to_n(local, visitor, time):
+    global coef2
+    global daily_games
+    global max_d2n
     return coef2 * local + daily_games * visitor + time + max_d2n
 
 
@@ -46,22 +51,23 @@ def time_to_n(local, visitor, time):
 
 #This is completely wrong, fix later
 def number_of_clauses_v1(t, d, h):
+    global teams
+    global days
+    global daily_games
+    matches = teams * (teams -1)
 
-    factor1 = t * (t - 1)
+    clauses = [
+        2 * matches,
+        ((days * (days - 1) + daily_games * (daily_games - 1))//2) * matches,
+        (matches * (matches - 1) // 2) * days * daily_games,
+        (matches//2) * days * (3*(teams - 2) + 1),
+        matches * (teams - 2) * (days - 1)
+    ]
 
-    factor2Num = sum([
-        d * (d + 1),
-        h * (h + 1),
-        ((t * (t - 1))-1)*(d*(d-1))*(h*(h-1)),
-        5*(t-2),
-        1
-    ])
-
-    factor2 = 2 + factor2Num//2
-
-    return factor1 * factor2
+    return sum(clauses)
 
 def at_least_once(cnf_file):
+    global teams
     counter = 0
     for i,j in all_matches:
         clause_days = []
@@ -80,9 +86,12 @@ def at_least_once(cnf_file):
         cnf_file.write(" ".join(clause_hours) + newline)
         counter += 1
 
-    assert(counter == 2 * teams * (teams - 1))
+    assert(counter == (2 * teams * (teams - 1)))
 
 def at_most_once(cnf_file):
+    global teams
+    global days
+    global daily_games
     counter = 0
     for i,j in all_matches:
         for k1 in range(1, days + 1):
@@ -92,8 +101,8 @@ def at_most_once(cnf_file):
                 counter += 1
 
         for m1 in range(1, daily_games + 1):
-            for m2 in range(m1 + 1, days + 1):
-                current_clause = [str(-1 * time_to_n(i, j, m11)), str(-1 * time_to_n(i, j, m2)), '0']
+            for m2 in range(m1 + 1, daily_games + 1):
+                current_clause = [str(-1 * time_to_n(i, j, m1)), str(-1 * time_to_n(i, j, m2)), '0']
                 cnf_file.write(" ".join(current_clause) + newline)
                 counter += 1
 
@@ -101,10 +110,13 @@ def at_most_once(cnf_file):
     assert(counter == correct_total_clauses)
 
 def no_simultaneous_match(cnf_file):
+    global teams
+    global days
+    global daily_games
     counter = 0
     current_match = 0
     for i,j in all_matches:
-        for a,b in all_matches[current_match+1:]
+        for a,b in all_matches[(current_match+1):]:
             for k in range(1, days + 1):
                 for m in range(1, daily_games + 1):
                     c_vars = [day_to_n(i, j, k), day_to_n(a, b, k), time_to_n(i, j, m), time_to_n(a, b, m)]
@@ -116,39 +128,73 @@ def no_simultaneous_match(cnf_file):
 
     matches = teams * (teams -1)
     correct_total_clauses = (matches * (matches - 1) // 2) * days * daily_games
-
     assert(counter == correct_total_clauses)
 
 def one_match_per_team_per_day(cnf_file):
+    global teams
+    global days
+    global daily_games
     counter = 0
     for i in range(teams):
-        for j in range(i + 1, teams):
+        for j in range(teams):
+            if i == j:
+                continue
             for k in range(j + 1, teams):
+                if k == i:
+                    continue
                 for m in range(1, days + 1):
                     current_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(i, k, m)), '0']
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
-                    second_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(k, i, m)), '0']
+                    current_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(k, i, m)), '0']
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
-                    third_clause = [str(-1 * day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m)), '0']
+                    current_clause = [str(-1 * day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m)), '0']
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
+        for j in range(i + 1, teams):
             for m in range(1, days + 1):
                 current_clause = [str(-1 * day_to_n(i, j, m)), str(-1 * day_to_n(j, i, m)), '0']
                 cnf_file.write(" ".join(current_clause) + newline)
                 counter += 1
 
-    
+    matches = teams * (teams - 1)
+    correct_total_clauses = (matches//2) * days * (3*(teams - 2) + 1)
+    assert(counter == correct_total_clauses)
 
-            
+def consecutive_days(cnf_file):
+    global teams
+    global days
+    global daily_games
+    counter = 0
+
+    for i in range(teams):
+        for j in range(teams):
+            if i == j:
+                continue
+            for k in range(j + 1, teams):
+                if k == i:
+                    continue
+                for m in range(1, days):
+                    current_clause = [str(-1 *  day_to_n(i, j, m)), str(-1 * day_to_n(i, k, m + 1)), "0"]
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
+                    current_clause = [str(-1 *  day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m + 1)), "0"]
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
+    correct_total_clauses = teams * (teams - 1) * (teams - 2) * (days - 1)
+    assert(counter == correct_total_clauses)
 
 
 def generate_cnf_file_v1(data):
-
+    global teams
+    global days
+    global daily_games
     teams = len(data['participants'])
     print("Number of teams: " + str(teams))
     start = datetime.strptime(data['start_date'], '%Y-%m-%d')
@@ -174,11 +220,12 @@ def generate_cnf_file_v1(data):
     for i in range(teams):
         for j in range(teams):
             if i == j:
-                break
+                continue
 
             all_matches.append((i, j))
     
     with open('prueba.txt', 'w') as cnf_file:
+        cnf_file.write('p ' + str(expected_var) + str(expected_clauses) + newline)
         print("Writing file")
         at_least_once(cnf_file)
         print("Finished the at least one of each match restriction set")
@@ -186,6 +233,16 @@ def generate_cnf_file_v1(data):
         print("Finished the at most one of each match restriction set")
         no_simultaneous_match(cnf_file)
         print("Finished the no simultaneous match restriction set")
+        one_match_per_team_per_day(cnf_file)
+        print("Finished the one match per team per day restriction set")
+        consecutive_days(cnf_file)
+        print("Finished consecutive days restriction set")
+        print("Finished writing")
+
+        cnf_file.close()
+
+    print("I'm done with this")
+
 
 
 
