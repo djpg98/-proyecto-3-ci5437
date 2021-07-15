@@ -59,7 +59,7 @@ def number_of_clauses_v1(t, d, h):
     clauses = [
         2 * matches,
         ((days * (days - 1) + daily_games * (daily_games - 1))//2) * matches,
-        (matches * (matches - 1) // 2) * days * daily_games,
+        #(matches * (matches - 1) // 2) * days * daily_games,
         (matches//2) * days * (3*(teams - 2) + 1),
         matches * (teams - 2) * (days - 1)
     ]
@@ -195,6 +195,9 @@ def generate_cnf_file_v1(data):
     global teams
     global days
     global daily_games
+    global coef1
+    global coef2
+    global max_d2n
     teams = len(data['participants'])
     print("Number of teams: " + str(teams))
     start = datetime.strptime(data['start_date'], '%Y-%m-%d')
@@ -206,16 +209,17 @@ def generate_cnf_file_v1(data):
     last_hour = datetime.strptime(round_down(data['end_time']), '%H:%M')
     delta = last_hour - first_hour
     #Esta línea depende de si end_time es la última hora a la que puede empezar un partido o terminar
-    daily_games = (delta.seconds // 3600) - 1
+    daily_games = ((delta.seconds // 3600) - 1) // 2
     print("Max. games in a day: " + str(daily_games))
 
     #Pre-calculations
     expected_clauses = number_of_clauses_v1(teams, days, daily_games)
-    expected_var = teams * (teams - 1) * (days + daily_games)
 
     coef1 = (teams - 1) * days + days
     max_d2n = day_to_n(teams - 1, teams - 1, days)
     coef2 = (teams - 1) * daily_games + daily_games
+
+    expected_var = time_to_n(teams - 1, teams - 2, daily_games)
 
     for i in range(teams):
         for j in range(teams):
@@ -223,16 +227,18 @@ def generate_cnf_file_v1(data):
                 continue
 
             all_matches.append((i, j))
+
+    print(time_to_n(0, 1, 1))
     
     with open('prueba.txt', 'w') as cnf_file:
-        cnf_file.write('p ' + str(expected_var) + str(expected_clauses) + newline)
+        cnf_file.write('p cnf ' + str(expected_var) + " " + str(expected_clauses) + newline)
         print("Writing file")
         at_least_once(cnf_file)
         print("Finished the at least one of each match restriction set")
         at_most_once(cnf_file)
         print("Finished the at most one of each match restriction set")
-        no_simultaneous_match(cnf_file)
-        print("Finished the no simultaneous match restriction set")
+        #no_simultaneous_match(cnf_file)
+        #print("Finished the no simultaneous match restriction set")
         one_match_per_team_per_day(cnf_file)
         print("Finished the one match per team per day restriction set")
         consecutive_days(cnf_file)
