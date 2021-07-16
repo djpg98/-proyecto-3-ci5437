@@ -60,8 +60,8 @@ def number_of_clauses_v1(t, d, h):
         2 * matches,
         ((days * (days - 1) + daily_games * (daily_games - 1))//2) * matches,
         #(matches * (matches - 1) // 2) * days * daily_games,
-        (matches//2) * days * (3*(teams - 2) + 1),
-        matches * (teams - 2) * (days - 1)
+        (matches//2) * days * (4*(teams - 2) + 1),
+        2* matches * (teams - 2) * (days - 1)
     ]
 
     return sum(clauses)
@@ -151,6 +151,10 @@ def one_match_per_team_per_day(cnf_file):
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
+                    current_clause = [str(-1 * day_to_n(j, i, m)), str(-1 * day_to_n(i, k, m)), '0']
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
                     current_clause = [str(-1 * day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m)), '0']
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
@@ -162,7 +166,7 @@ def one_match_per_team_per_day(cnf_file):
                 counter += 1
 
     matches = teams * (teams - 1)
-    correct_total_clauses = (matches//2) * days * (3*(teams - 2) + 1)
+    correct_total_clauses = (matches//2) * days * (4*(teams - 2) + 1)
     assert(counter == correct_total_clauses)
 
 def consecutive_days(cnf_file):
