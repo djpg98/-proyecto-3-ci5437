@@ -154,5 +154,6 @@ def to_calendar(file_name, sat_solution):
 
     generate_icalendar(sat_solution, data)
 
-to_calendar(sys.argv[1], sys.argv[2])
+if __name__ == "__main__":
+    to_calendar(sys.argv[1], sys.argv[2])
 

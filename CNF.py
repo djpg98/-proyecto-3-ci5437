@@ -59,7 +59,7 @@ def number_of_clauses_v1(t, d, h):
     clauses = [
         2 * matches,
         ((days * (days - 1) + daily_games * (daily_games - 1))//2) * matches,
-        #(matches * (matches - 1) // 2) * days * daily_games,
+        (matches * (matches - 1) // 2) * days * daily_games,
         (matches//2) * days * (4*(teams - 2) + 1),
         2* matches * (teams - 2) * (days - 1)
     ]
@@ -241,15 +241,16 @@ def generate_cnf_file_v1(data):
 
             all_matches.append((i, j))
 
-    with open('prueba.txt', 'w') as cnf_file:
+    tname = data['tournament_name']
+    with open(f'SAT_{tname}.txt', 'w') as cnf_file:
         cnf_file.write('p cnf ' + str(expected_var) + " " + str(expected_clauses) + newline)
         print("Writing file")
         at_least_once(cnf_file)
         print("Finished the at least one of each match restriction set")
         at_most_once(cnf_file)
         print("Finished the at most one of each match restriction set")
-        #no_simultaneous_match(cnf_file)
-        #print("Finished the no simultaneous match restriction set")
+        no_simultaneous_match(cnf_file)
+        print("Finished the no simultaneous match restriction set")
         one_match_per_team_per_day(cnf_file)
         print("Finished the one match per team per day restriction set")
         consecutive_days(cnf_file)
@@ -257,8 +258,8 @@ def generate_cnf_file_v1(data):
         print("Finished writing")
 
         cnf_file.close()
-
-    print("I'm done with this")
+        
+    return tname
 
 
 
@@ -271,6 +272,7 @@ def to_cnf(file_name):
 
         datafile.close()
 
-    generate_cnf_file_v1(data)
+    return generate_cnf_file_v1(data)
 
-to_cnf(sys.argv[1])
+if __name__ == "__main__":
+    to_cnf(sys.argv[1])
