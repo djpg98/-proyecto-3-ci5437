@@ -183,11 +183,19 @@ def consecutive_days(cnf_file):
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
+                    current_clause = [str(-1 *  day_to_n(i, k, m)), str(-1 * day_to_n(i, j, m + 1)), "0"]
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
                     current_clause = [str(-1 *  day_to_n(j, i, m)), str(-1 * day_to_n(k, i, m + 1)), "0"]
                     cnf_file.write(" ".join(current_clause) + newline)
                     counter += 1
 
-    correct_total_clauses = teams * (teams - 1) * (teams - 2) * (days - 1)
+                    current_clause = [str(-1 *  day_to_n(k, i, m)), str(-1 * day_to_n(j, i, m + 1)), "0"]
+                    cnf_file.write(" ".join(current_clause) + newline)
+                    counter += 1
+
+    correct_total_clauses = 2 * teams * (teams - 1) * (teams - 2) * (days - 1)
     assert(counter == correct_total_clauses)
 
 
@@ -216,6 +224,7 @@ def generate_cnf_file_v1(data):
     expected_clauses = number_of_clauses_v1(teams, days, daily_games)
 
     coef1 = (teams - 1) * days + days
+    print(coef1)
     max_d2n = day_to_n(teams - 1, teams - 1, days)
     coef2 = (teams - 1) * daily_games + daily_games
 
@@ -228,8 +237,6 @@ def generate_cnf_file_v1(data):
 
             all_matches.append((i, j))
 
-    print(time_to_n(0, 1, 1))
-    
     with open('prueba.txt', 'w') as cnf_file:
         cnf_file.write('p cnf ' + str(expected_var) + " " + str(expected_clauses) + newline)
         print("Writing file")
