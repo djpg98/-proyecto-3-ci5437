@@ -1,0 +1,25 @@
+{
+    "tournament_name": "MLB",
+    "start_date": "2021-07-12",
+    "end_date": "2021-10-12",
+    "start_time": "11:00",
+    "end_time": "21:00",
+    "participants": [
+        "LAD",
+        "TB",
+        "ATL",
+        "HOU",
+        "SD",
+        "NYY",
+        "MIA",
+        "OAK",
+        "MIL",
+        "TOR",
+        "CIN",
+        "MIN",
+        "STL",
+        "CLE",
+        "CHC",
+        "CHW"
+    ]
+  }
