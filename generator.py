@@ -23,7 +23,7 @@ def generate(n_cases, n_participants, tight):
         n_matches = n_participants * (n_participants-1)
         n_hours = n_matches * 2
 
-        hours_per_day = randint(1, 12) * 2
+        hours_per_day = randint(3, 12) * 2
         start_time = randint(0, 24-hours_per_day)
         end_time = start_time + hours_per_day
         
