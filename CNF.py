@@ -2,6 +2,7 @@ from datetime import datetime
 
 import json
 import sys
+import time
 
 """
 NO OLVIDAR:
@@ -64,6 +65,8 @@ def number_of_clauses_v1(t, d, h):
         2* matches * (teams - 2) * (days - 1)
     ]
 
+    print(clauses)
+
     return sum(clauses)
 
 def at_least_once(cnf_file):
@@ -115,14 +118,19 @@ def no_simultaneous_match(cnf_file):
     global daily_games
     counter = 0
     current_match = 0
+    dates = []
+
+    for k in range(1, days + 1):
+        for m in range(1, daily_games + 1):
+            dates.append((k, m))
+
     for i,j in all_matches:
         for a,b in all_matches[(current_match+1):]:
-            for k in range(1, days + 1):
-                for m in range(1, daily_games + 1):
-                    c_vars = [day_to_n(i, j, k), day_to_n(a, b, k), time_to_n(i, j, m), time_to_n(a, b, m)]
-                    current_clause = list(map(str, map(lambda x: -1 * x, c_vars))) + ['0']
-                    cnf_file.write(" ".join(current_clause) + newline)
-                    counter += 1
+            for k, m in dates:
+                c_vars = [day_to_n(i, j, k), day_to_n(a, b, k), time_to_n(i, j, m), time_to_n(a, b, m)]
+                current_clause = list(map(str, map(lambda x: -1 * x, c_vars))) + ['0']
+                cnf_file.write(" ".join(current_clause) + newline)
+                counter += 1
 
         current_match += 1
 
@@ -135,6 +143,8 @@ def one_match_per_team_per_day(cnf_file):
     global days
     global daily_games
     counter = 0
+    
+
     for i in range(teams):
         for j in range(teams):
             if i == j:
@@ -174,6 +184,10 @@ def consecutive_days(cnf_file):
     global days
     global daily_games
     counter = 0
+    print("HEY OH HEY OH")
+    print(teams)
+    print(days)
+    print(daily_games)
 
     for i in range(teams):
         for j in range(teams):
@@ -225,6 +239,7 @@ def generate_cnf_file_v1(data):
     print("Max. games in a day: " + str(daily_games))
 
     #Pre-calculations
+    time1 = time.process_time()
     expected_clauses = number_of_clauses_v1(teams, days, daily_games)
 
     coef1 = (teams - 1) * days + days
@@ -241,24 +256,42 @@ def generate_cnf_file_v1(data):
 
             all_matches.append((i, j))
 
+    time2 = time.process_time()
+
     tname = data['tournament_name']
     with open(f'SAT_{tname}.txt', 'w') as cnf_file:
         cnf_file.write('p cnf ' + str(expected_var) + " " + str(expected_clauses) + newline)
         print("Writing file")
+        time3 = time.process_time()
         at_least_once(cnf_file)
+        time4 = time.process_time()
         print("Finished the at least one of each match restriction set")
+        time5 = time.process_time()
         at_most_once(cnf_file)
+        time6 = time.process_time()
         print("Finished the at most one of each match restriction set")
+        time7 = time.process_time()
         no_simultaneous_match(cnf_file)
+        time8 = time.process_time()
         print("Finished the no simultaneous match restriction set")
+        time9 = time.process_time()
         one_match_per_team_per_day(cnf_file)
+        time10 = time.process_time()
         print("Finished the one match per team per day restriction set")
+        time11 = time.process_time()
         consecutive_days(cnf_file)
+        time12 = time.process_time()
         print("Finished consecutive days restriction set")
         print("Finished writing")
 
         cnf_file.close()
-        
+
+    #time report section
+    if (len(sys.argv) > 2 and sys.argv[2] == "-a"):
+        with open('redResults.csv', 'a') as reduction:
+            reduction.write(f'{time2 - time1},{time4 - time3},{time6 - time5},{time8 - time7},{time10 - time9},{time12 - time11}, {time12 - time1}' + newline)
+            reduction.close()
+    
     return tname
 
 
