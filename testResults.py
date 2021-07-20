@@ -22,5 +22,4 @@ with open('calResults.csv', 'w') as cal:
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
     if filename.endswith('.json'):
-        os.system('python3.6 newCalendar.py ' + filename + ' -a')
-
+        os.system('python3.6 newCalendar.py ' + rootdir + "/" + filename + ' -a')

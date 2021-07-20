@@ -258,7 +258,7 @@ def generate_cnf_file_v1(data):
 
     time2 = time.process_time()
 
-    tname = data['tournament_name']
+    tname = data['tournament_name'].replace(" ", "-")
     with open(f'SAT_{tname}.txt', 'w') as cnf_file:
         cnf_file.write('p cnf ' + str(expected_var) + " " + str(expected_clauses) + newline)
         print("Writing file")

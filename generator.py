@@ -58,7 +58,7 @@ def generate(n_cases, n_participants, tight):
         start_date = tmp_start_date + timedelta(days=randrange(time_between_dates.days))
         end_date = start_date + timedelta(days=interval_dates-1)
             
-        with open(f'Casos de Prueba/{n_participants}_case_{i}.json', 'w') as case_file:
+        with open(f'CasosDePrueba/{n_participants}_case_{i}.json', 'w') as case_file:
 
             case_file.write("{" + newline)
             case_file.write('\t"tournament_name": "' + tournaments[randint(0, len(tournaments)-1)] + '",' + newline)
@@ -68,7 +68,7 @@ def generate(n_cases, n_participants, tight):
             case_file.write('\t"end_time": "' + str(end_time) + ':00",' + newline)
             case_file.write('\t"participants": [' + newline)
 
-            tmp = participants
+            tmp = participants[:]
             for i in range(n_participants):
                 rnd_choice = choice(tmp)
                 tmp.remove(rnd_choice)
@@ -90,8 +90,8 @@ try:
     if int(sys.argv[3]) < 0 or int(sys.argv[3]) > 2:
         sys.exit(" Error: Solo se pueden colocar tres modalidades de ajustado: 0- Relajado, 1- Normal, 2- Ajustado")
 
-    generate(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-    print(f" Los archivo con los casos de prueba se han generado en la carpeta Casos de Prueba")
+generate(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+print(f" Los archivo con los casos de prueba se han generado en la carpeta Casos de Prueba")
 
 except IndexError:
     print(" Error: El comando para correr el archivo debe seguir la siguiente forma: generator.py <# de casos> <# de participantes>")
