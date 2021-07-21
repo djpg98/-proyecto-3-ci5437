@@ -61,6 +61,14 @@ def get_info_from_number(number, schedule):
 
     if number <= max_d2n:
         local, visitor, matchday = n_to_triple(number, coef1, teams, days)
+        """if local == 9 and visitor == 6:
+            print(coef1)
+            print("THE BUGs")
+            print(number)
+        if local == 13 and visitor == 9:
+            print(coef1)
+            print("THE BUGs")
+            print(number)"""
         schedule[(local, visitor)] = MatchFacts(matchday)
     else:
         local, visitor, time = n_to_triple(number - max_d2n, coef2, teams, daily_games)
@@ -90,6 +98,8 @@ def generate_icalendar(sat_solution, data):
 
     #Pre-calculations
 
+    #print(teams - 1)
+    #print(days)
     coef1 = (teams - 1) * days + days
     max_d2n = day_to_n(teams - 1, teams - 1, days)
     coef2 = (teams - 1) * daily_games + daily_games
@@ -134,6 +144,9 @@ def generate_icalendar(sat_solution, data):
         event['dtend'] = matchdate.strftime('%Y%m%dT') + matchend.strftime('%H%M00')
         event['summary'] = f'{local} (H) vs {visitor} (A)'
         cal.add_component(event)
+        
+        #print(event)
+        #print("\n")
 
     name = data['tournament_name']
     with open(f'{name}.ics', 'wb') as tournament_calendar:

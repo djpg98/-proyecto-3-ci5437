@@ -12,7 +12,7 @@ with open('redResults.csv', 'w') as reduction:
     reduction.close()
 
 with open('solverResults.csv', 'w') as solver:
-    solver.write('conflicts, decisions, time' + newline)
+    solver.write('result, conflicts, decisions, time' + newline)
     solver.close()
 
 with open('calResults.csv', 'w') as cal:

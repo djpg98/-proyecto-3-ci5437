@@ -64,8 +64,15 @@ def generate(n_cases, n_participants, tight):
             case_file.write('\t"tournament_name": "' + tournaments[randint(0, len(tournaments)-1)] + '",' + newline)
             case_file.write('\t"start_date": "' + str(start_date) + '",' + newline)
             case_file.write('\t"end_date": "' + str(end_date) + '",' + newline)
-            case_file.write('\t"start_time": "' + str(start_time) + ':00",' + newline)
-            case_file.write('\t"end_time": "' + str(end_time) + ':00",' + newline)
+            if start_time < 12:
+                case_file.write('\t"start_time": "0' + str(start_time) + ':00",' + newline)
+            else:
+                case_file.write('\t"start_time": "' + str(start_time) + ':00",' + newline)
+            if end_time < 12:
+                case_file.write('\t"end_time": "0' + str(end_time) + ':00",' + newline)
+            else:
+                case_file.write('\t"end_time": "' + str(end_time) + ':00",' + newline)
+
             case_file.write('\t"participants": [' + newline)
 
             tmp = participants[:]
@@ -90,8 +97,8 @@ try:
     if int(sys.argv[3]) < 0 or int(sys.argv[3]) > 2:
         sys.exit(" Error: Solo se pueden colocar tres modalidades de ajustado: 0- Relajado, 1- Normal, 2- Ajustado")
 
-generate(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-print(f" Los archivo con los casos de prueba se han generado en la carpeta Casos de Prueba")
+    generate(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+    print(f" Los archivo con los casos de prueba se han generado en la carpeta Casos de Prueba")
 
 except IndexError:
     print(" Error: El comando para correr el archivo debe seguir la siguiente forma: generator.py <# de casos> <# de participantes>")
