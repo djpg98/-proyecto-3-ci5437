@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Copa Kirin 1",
+	"start_date": "2023-04-12",
+	"end_date": "2023-05-16",
+	"start_time": "01:00",
+	"end_time": "23:00",
+	"participants": [
+		"Egipto",
+		"Liechtenstein",
+		"Bolivia",
+		"Libia",
+		"Honduras",
+		"Estados Unidos",
+		"Paises Bajos",
+		"Canada",
+		"Dominica",
+		"Brasil",
+		"Oman",
+		"Bulgaria",
+		"Guyana",
+		"Vanuatu",
+		"Santa Lucia",
+		"Venezuela",
+		"Palestina",
+		"Paraguay",
+		"Kenia",
+		"Kuwait"
+	]
+}

@@ -14,7 +14,7 @@ if (len(sys.argv) > 2 and sys.argv[2] == '-a'):
     if os.WIFEXITED(result):
         if os.WEXITSTATUS(result) == 124:
             with open('solverResults.csv', 'a') as solverResults:
-                solverResults.write(f'TIMEOUT,-1,-1,900' + newline)
+                solverResults.write(f'TIMEOUT,-1,-1,600' + newline)
                 solverResults.close()
             with open('calResults.csv', 'a') as calResults:
                 calResults.write(f'-1' + newline)
@@ -54,7 +54,7 @@ if (len(sys.argv) > 2 and sys.argv[2] == '-a'):
     else:
         with open('calResults.csv', 'a') as calResults:
             calResults.write(f'-1' + newline)
-            calResults.close()        
+            calResults.close()      
 
 else:
     os.system(f'./glucose-syrup-4.1/simp/glucose_static SAT_{tname}.txt SOL_{tname}.txt')

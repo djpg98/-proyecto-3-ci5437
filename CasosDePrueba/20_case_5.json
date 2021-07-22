@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Mundial de LoL 4",
+	"start_date": "2022-03-16",
+	"end_date": "2022-06-19",
+	"start_time": "12:00",
+	"end_time": "20:00",
+	"participants": [
+		"Finlandia",
+		"Nepal",
+		"Filipinas",
+		"Irlanda",
+		"Malasia",
+		"Tonga",
+		"Ecuador",
+		"Libia",
+		"Oman",
+		"Namibia",
+		"Samoa",
+		"Kazajistan",
+		"Hungria",
+		"Guyana",
+		"Maldivas",
+		"Francia",
+		"Haiti",
+		"Santa Lucia",
+		"Italia",
+		"Uruguay"
+	]
+}

@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Copa Mundial Femenina 2",
+	"start_date": "2021-10-03",
+	"end_date": "2021-11-26",
+	"start_time": "05:00",
+	"end_time": "19:00",
+	"participants": [
+		"Suecia",
+		"Nueva Zelanda",
+		"Espanna",
+		"Dominica",
+		"Yemen",
+		"Rumania",
+		"Tuvalu",
+		"Liechtenstein",
+		"Turquia",
+		"Palestina",
+		"Brasil",
+		"Italia",
+		"Yibuti",
+		"Uganda",
+		"Santa Lucia",
+		"Andorra",
+		"Tonga",
+		"Vanuatu",
+		"Egipto",
+		"Georgia"
+	]
+}

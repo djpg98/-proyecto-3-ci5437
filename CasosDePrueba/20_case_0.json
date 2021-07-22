@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Mundial de LoL 1",
+	"start_date": "2021-07-03",
+	"end_date": "2021-08-13",
+	"start_time": "06:00",
+	"end_time": "23:00",
+	"participants": [
+		"Libia",
+		"Tonga",
+		"Guyana",
+		"Venezuela",
+		"Vietnam",
+		"Samoa",
+		"Oman",
+		"Dominica",
+		"Santa Lucia",
+		"Egipto",
+		"Zimbabue",
+		"Suiza",
+		"Irlanda",
+		"Grecia",
+		"Ecuador",
+		"Jordania",
+		"Kenia",
+		"Catar",
+		"Suecia",
+		"Camerun"
+	]
+}

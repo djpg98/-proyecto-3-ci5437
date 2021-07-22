@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Mundial de LoL 2",
+	"start_date": "2022-05-05",
+	"end_date": "2022-07-20",
+	"start_time": "05:00",
+	"end_time": "15:00",
+	"participants": [
+		"Jamaica",
+		"Kenia",
+		"Camerun",
+		"Bolivia",
+		"Tonga",
+		"Estados Unidos",
+		"Honduras",
+		"Canada",
+		"Italia",
+		"Madagascar",
+		"Guyana",
+		"Georgia",
+		"Bulgaria",
+		"Kuwait",
+		"Ecuador",
+		"Reino Unido",
+		"Turquia",
+		"Yemen",
+		"Irlanda",
+		"Afganistan"
+	]
+}

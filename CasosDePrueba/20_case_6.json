@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Mundial 1",
+	"start_date": "2024-01-27",
+	"end_date": "2024-04-12",
+	"start_time": "11:00",
+	"end_time": "21:00",
+	"participants": [
+		"Madagascar",
+		"Egipto",
+		"Paraguay",
+		"Honduras",
+		"Bolivia",
+		"Namibia",
+		"Dinamarca",
+		"Vanuatu",
+		"Singapur",
+		"Zimbabue",
+		"Canada",
+		"Ecuador",
+		"Kuwait",
+		"Afganistan",
+		"Paises Bajos",
+		"Suecia",
+		"Rumania",
+		"Rusia",
+		"Espanna",
+		"Nepal"
+	]
+}

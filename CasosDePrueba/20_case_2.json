@@ -1,0 +1,29 @@
+{
+	"tournament_name": "Copa Mundial Femenina 1",
+	"start_date": "2024-06-29",
+	"end_date": "2024-07-30",
+	"start_time": "00:00",
+	"end_time": "23:00",
+	"participants": [
+		"Santa Lucia",
+		"Liechtenstein",
+		"Filipinas",
+		"Egipto",
+		"Irlanda",
+		"Venezuela",
+		"Madagascar",
+		"Reino Unido",
+		"Andorra",
+		"Nepal",
+		"Guyana",
+		"Laos",
+		"Suiza",
+		"Dominica",
+		"Libia",
+		"Ecuador",
+		"Canada",
+		"Estados Unidos",
+		"Finlandia",
+		"Camerun"
+	]
+}

@@ -61,17 +61,13 @@ def get_info_from_number(number, schedule):
 
     if number <= max_d2n:
         local, visitor, matchday = n_to_triple(number, coef1, teams, days)
-        """if local == 9 and visitor == 6:
-            print(coef1)
-            print("THE BUGs")
-            print(number)
-        if local == 13 and visitor == 9:
-            print(coef1)
-            print("THE BUGs")
-            print(number)"""
+        if local == visitor:
+            return
         schedule[(local, visitor)] = MatchFacts(matchday)
     else:
         local, visitor, time = n_to_triple(number - max_d2n, coef2, teams, daily_games)
+        if local == visitor:
+            return
         schedule[(local, visitor)].time = time
 
 
@@ -94,7 +90,7 @@ def generate_icalendar(sat_solution, data):
     last_hour = datetime.strptime(round_down(data['end_time']), '%H:%M')
     delta = last_hour - first_hour
     #Esta línea depende de si end_time es la última hora a la que puede empezar un partido o terminar
-    daily_games = ((delta.seconds // 3600) - 1) // 2
+    daily_games = ((delta.seconds // 3600)) // 2
 
     #Pre-calculations
 
@@ -124,6 +120,7 @@ def generate_icalendar(sat_solution, data):
 
     cal = Calendar()
 
+    assert(len(schedule) == teams * (teams - 1))
     for match in schedule:
 
         """print("SCHEDULED MATCH")
@@ -140,8 +137,8 @@ def generate_icalendar(sat_solution, data):
         matchdate = start + timedelta(days=schedule[match].date - 1)
         matchtime = first_hour + timedelta(hours=(schedule[match].time - 1)*2)
         matchend = matchtime + timedelta(hours=2)
-        event['dtstart'] = matchdate.strftime('%Y%m%dT') + matchtime.strftime('%H%M00')
-        event['dtend'] = matchdate.strftime('%Y%m%dT') + matchend.strftime('%H%M00')
+        event['dtstart'] = matchdate.strftime('%Y%m%dT') + matchtime.strftime('%H%M00Z')
+        event['dtend'] = matchdate.strftime('%Y%m%dT') + matchend.strftime('%H%M00Z')
         event['summary'] = f'{local} (H) vs {visitor} (A)'
         cal.add_component(event)
         

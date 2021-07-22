@@ -235,7 +235,8 @@ def generate_cnf_file_v1(data):
     last_hour = datetime.strptime(round_down(data['end_time']), '%H:%M')
     delta = last_hour - first_hour
     #Esta línea depende de si end_time es la última hora a la que puede empezar un partido o terminar
-    daily_games = ((delta.seconds // 3600) - 1) // 2
+    daily_games = ((delta.seconds // 3600)) // 2
+    print(delta.seconds // 3600)
     print("Max. games in a day: " + str(daily_games))
 
     #Pre-calculations
@@ -295,6 +296,43 @@ def generate_cnf_file_v1(data):
     return tname
 
 
+def generate_clause_number_file(data):
+    global teams
+    global days
+    global daily_games
+    global coef1
+    global coef2
+    global max_d2n
+    teams = len(data['participants'])
+    print("Number of teams: " + str(teams))
+    start = datetime.strptime(data['start_date'], '%Y-%m-%d')
+    end = datetime.strptime(data['end_date'], '%Y-%m-%d')
+    delta = end - start
+    days = delta.days
+    print("Number of days: " + str(days))
+    first_hour = datetime.strptime(round_up(data['start_time']), '%H:%M')
+    last_hour = datetime.strptime(round_down(data['end_time']), '%H:%M')
+    delta = last_hour - first_hour
+    #Esta línea depende de si end_time es la última hora a la que puede empezar un partido o terminar
+    daily_games = ((delta.seconds // 3600)) // 2
+    print(delta.seconds // 3600)
+    print("Max. games in a day: " + str(daily_games))
+
+    matches = teams * (teams -1)
+
+    clauses = [
+        2 * matches,
+        ((days * (days - 1) + daily_games * (daily_games - 1))//2) * matches,
+        (matches * (matches - 1) // 2) * days * daily_games,
+        (matches//2) * days * (4*(teams - 2) + 1),
+        2* matches * (teams - 2) * (days - 1)
+    ]
+
+    clauses_and_total = clauses + [sum(clauses)]
+
+    with open('clauseNumber.csv', 'a') as clauseFile:
+        clauseFile.write(",".join(map(str,clauses_and_total)) + '\n')
+        clauseFile.close()
 
 
 def to_cnf(file_name):
@@ -306,6 +344,15 @@ def to_cnf(file_name):
         datafile.close()
 
     return generate_cnf_file_v1(data)
+
+def clause_number(file_name):
+    with open(file_name, 'r') as datafile:
+
+        data = json.load(datafile)
+
+        datafile.close()
+
+        generate_clause_number_file(data)
 
 if __name__ == "__main__":
     to_cnf(sys.argv[1])

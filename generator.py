@@ -64,11 +64,11 @@ def generate(n_cases, n_participants, tight):
             case_file.write('\t"tournament_name": "' + tournaments[randint(0, len(tournaments)-1)] + '",' + newline)
             case_file.write('\t"start_date": "' + str(start_date) + '",' + newline)
             case_file.write('\t"end_date": "' + str(end_date) + '",' + newline)
-            if start_time < 12:
+            if start_time < 10:
                 case_file.write('\t"start_time": "0' + str(start_time) + ':00",' + newline)
             else:
                 case_file.write('\t"start_time": "' + str(start_time) + ':00",' + newline)
-            if end_time < 12:
+            if end_time < 10:
                 case_file.write('\t"end_time": "0' + str(end_time) + ':00",' + newline)
             else:
                 case_file.write('\t"end_time": "' + str(end_time) + ':00",' + newline)
