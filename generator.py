@@ -101,4 +101,4 @@ try:
     print(f" Los archivo con los casos de prueba se han generado en la carpeta Casos de Prueba")
 
 except IndexError:
-    print(" Error: El comando para correr el archivo debe seguir la siguiente forma: generator.py <# de casos> <# de participantes>")
+    print(" Error: El comando para correr el archivo debe seguir la siguiente forma: generator.py <# de casos> <# de participantes> <# de tipo de torneo>")
